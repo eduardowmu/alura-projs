@@ -2,13 +2,14 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
-    // "rootDir": "./src",
+    "rootDir": "./src",
     "outDir": "./dist",
-
+    "removeComments": true,
+    "noEmitOnError": true,
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "commonjs",
-    "target": "es5",
+    "target": "es2019",
     "types": [],
     // For nodejs:
     "lib": ["ESNext", "DOM"],
