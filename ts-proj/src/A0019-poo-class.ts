@@ -1,6 +1,10 @@
 export class Empresa {
+  /**
+   * Tudo que é public, não necessita ser declarado
+   * como public
+   */
   //ou -> public readonly name = 'EWM Ltda';
-  public readonly name: string;// = 'EWM Ltda'; //public não é necessário
+  private readonly name: string;// = 'EWM Ltda'; //public não é necessário
   private readonly colaboradores: Colaborador[] = [];
   protected readonly cnpj: string;
 
@@ -18,6 +22,14 @@ export class Empresa {
       console.log(colaborador);
     }
   }
+
+  getName(): string {
+    return this.name;
+  }
+
+  getCnpj(): string {
+    return this.cnpj;
+  }
 }
 
 export class Colaborador {
@@ -27,6 +39,8 @@ export class Colaborador {
 
 const empresa = new Empresa('EWM Ltda', '11.111.111/0001-11');
 console.log(empresa);
+console.log(empresa.getName());
+console.log(empresa.getCnpj());
 
 const colaborador1 = new Colaborador('Eduardo', 'Murakoshi');
 const colaborador2 = new Colaborador('Camila', 'Murakoshi');
