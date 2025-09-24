@@ -9,5 +9,5 @@ const doc: Doc = {
   text: 'My text of My Doc',
 }
 
-//não estoura exceção
+//não estoura exceção, e o ?? é como um ternário 
 console.log(doc.date?.toDateString() ?? 'Sem data');
