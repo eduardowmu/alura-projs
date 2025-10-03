@@ -13,6 +13,7 @@
     "types": [],
     // For nodejs:
     "lib": ["ESNext", "DOM"],
+    "allowJs": true,
     // "types": ["node"],
     // and npm install -D @types/node
 
