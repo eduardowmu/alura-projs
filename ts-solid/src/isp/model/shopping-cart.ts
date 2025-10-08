@@ -26,8 +26,7 @@ export class ShoppingCart {
   }
 
   totalWithDiscount(): number {
-    const result = this.discount.calculate(this.total());
-    return result;
+    return this.discount.calculate(this.total());
   }
 
   isEmpty(): boolean {
