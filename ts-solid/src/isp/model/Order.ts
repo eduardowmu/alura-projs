@@ -1,3 +1,4 @@
+import { CustomerOrder } from '../interface/CustomerProtocol';
 import { OrderStatus } from '../interface/OrderStatus';
 import { Persistency } from '../persistency/Persistency';
 import { Messaging } from '../service/Messaging';
@@ -9,7 +10,8 @@ export class Order {
   constructor(
     private readonly shoppingCart: ShoppingCart,
     private readonly messaging: Messaging,
-    private readonly persistency: Persistency
+    private readonly persistency: Persistency,
+    private readonly customer: CustomerOrder
   ) {}
 
   get orderStatus(): OrderStatus {
@@ -31,5 +33,6 @@ export class Order {
     
     this.persistency.saveOrder();
     this.shoppingCart.clear();
+    console.log(this.customer);
   }
 }

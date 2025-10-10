@@ -1,3 +1,4 @@
+import { IndividualCustomer } from '../model/IndividualCustomer';
 import { Order } from '../model/Order';
 import { Product } from '../model/Product';
 import { ShoppingCart } from '../model/shopping-cart';
@@ -9,7 +10,8 @@ const discount = new FiftyPercentDiscount();
 const shoppingCart = new ShoppingCart(discount);
 const messaging = new Messaging();
 const persistency = new Persistency();
-const order = new Order(shoppingCart, messaging, persistency);
+const customer = new IndividualCustomer('Eduardo', 'Murakoshi', '111.111.111-11')
+const order = new Order(shoppingCart, messaging, persistency, customer);
 
 shoppingCart.addItem(new Product('Camiseta', 49.91));
 shoppingCart.addItem(new Product('Caderno', 9.92));
