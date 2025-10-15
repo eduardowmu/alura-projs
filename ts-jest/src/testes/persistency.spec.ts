@@ -1,9 +1,24 @@
-it('Persistency Test success', () => {
-  const number = 1;
-  expect(number).toBe(1);
+import { Persistency } from '../dip/persistency/Persistency';
+afterEach(() => jest.clearAllMocks());
+
+it('Persistency Test: It should returns undefined', () => {
+  const sut = new Persistency();
+  const consoleSpy = jest.spyOn(console, 'log');
+  sut.saveOrder();
+  expect(consoleSpy).toHaveBeenCalledTimes(1);
 });
 
-it('Persistency test failure', () => {
-  const number = 2;
-  expect(number).not.toEqual(1);
+it('Persistency Test: It should returns undefined', () => {
+  const sut = new Persistency();
+  const consoleSpy = jest.spyOn(console, 'log');
+  sut.saveOrder();
+  expect(consoleSpy).toHaveBeenCalledTimes(1);
+});
+
+it('Persistency Test: It should returns undefined', () => {
+  const sut = new Persistency();
+  const consoleSpy = jest.spyOn(console, 'log');
+  sut.saveOrder();
+  expect(consoleSpy).toHaveBeenCalledWith(
+    'Order safe successfully');
 });
