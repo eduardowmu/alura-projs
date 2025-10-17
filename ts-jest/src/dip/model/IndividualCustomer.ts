@@ -1,5 +1,9 @@
-import { last } from 'lodash';
-import { CustomerOrder, IndividualCustomerProtocol, EnterpriseCustomerProtocol } from '../interface/CustomerProtocol'
+//import { last } from 'lodash';
+import { 
+  CustomerOrder, 
+  IndividualCustomerProtocol,
+  EnterpriseCustomerProtocol
+} from '../interface/CustomerProtocol'
 
 export class IndividualCustomer 
     implements IndividualCustomerProtocol, CustomerOrder {

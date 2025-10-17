@@ -1,4 +1,4 @@
-import { extend } from 'lodash';
+//import { extend } from 'lodash';
 
 export abstract class Discount {
   protected discount = 0;
