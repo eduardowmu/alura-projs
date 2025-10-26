@@ -1,13 +1,19 @@
-import React from "react";
+import React, { Children } from "react";
 
 interface Props {
     text: string;
     onClick: () => void;
     className?: string;
+    children?: React.ReactNode;
 }
 
 export function Button(props: Props) {
     return (
-        <button onClick={props.onClick} className={props.className}>{props.text}</button>
+        <button 
+            onClick={props.onClick} 
+            className={props.className}>
+                {props.text}
+                {props.children}
+        </button>
     );
 }
