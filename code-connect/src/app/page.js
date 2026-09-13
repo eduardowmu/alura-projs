@@ -1,7 +1,8 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { CardPost } from "@/components/CardPost";
-
+import logger from '@/logger';
+/*
 const post = {
   "id": 1,
   "cover": "https://raw.githubusercontent.com/viniciosneves/code-connect-assets/main/posts/introducao-ao-react.png",
@@ -16,11 +17,22 @@ const post = {
       "avatar": "https://raw.githubusercontent.com/viniciosneves/code-connect-assets/main/authors/anabeatriz_dev.png"
   }
 }
+*/
+async function getAllPosts() {
+  const response = await fetch('http://localhost:3042/posts')
+  if(!response.ok) {
+    logger.error('Oops algo deu errado')
+    return []
+  } 
+  logger.info('Posts carregados com sucesso')
+  return response.json()
+}
 
-export default function Home() {
+export default async function Home() {
+  const posts = await getAllPosts()
   return (
     <main>
-      <CardPost post={post}/>
+      {posts.map(post => <CardPost post={post} />)}
     </main>
   );
 }
