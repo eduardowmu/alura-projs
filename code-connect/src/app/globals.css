@@ -21,6 +21,6 @@ body {
   flex-grow: 1;
 }
 
-p, h2 {
+p, h1, h2 {
   color: #FFFF;
 }

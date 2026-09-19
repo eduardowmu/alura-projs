@@ -1,7 +1,8 @@
-import Image from "next/image";
+//import Image from "next/image";
 import styles from "./page.module.css";
 import { CardPost } from "@/components/CardPost";
 import logger from '@/logger';
+import Link from "next/link";
 /*
 const post = {
   "id": 1,
@@ -18,21 +19,38 @@ const post = {
   }
 }
 */
-async function getAllPosts() {
-  const response = await fetch('http://localhost:3042/posts')
+async function getAllPosts(page) {
+  /*
+  const response = await fetch(`http://localhost:3042/posts?_page=${page}&_per_page=6`).catch(error => {
+    logger.error('Erro de rede: ' + error.message);
+    return null;
+  });
+  if (!response || !response.ok) {
+    logger.error('Problema ao obter os posts');
+    return [];
+  }
+  return response.json();
+  */
+  const response = await fetch(`http://localhost:3042/posts?_page=${page}&_per_page=6`)
   if(!response.ok) {
     logger.error('Oops algo deu errado')
     return []
   } 
   logger.info('Posts carregados com sucesso')
   return response.json()
+  
 }
 
-export default async function Home() {
-  const posts = await getAllPosts()
+export default async function Home({ searchParams }) {
+  //const currentPage = searchParams?.page || 1
+  const { data: posts, prev, next } = await getAllPosts(searchParams?.page || 1)
   return (
-    <main>
-      {posts.map(post => <CardPost post={post} />)}
+    <main className={styles.grid}>
+      {posts.map(post => <CardPost key={post.id} post={post} />)}
+      <div className={styles.links}>
+        {prev && <Link href={`/?page=${prev}`}>Página anterior</Link>}
+        {next && <Link href={`/?page=${next}`}>Próxima página</Link>}
+      </div>
     </main>
-  );
+  )
 }
