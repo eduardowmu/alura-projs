@@ -1,9 +1,11 @@
 import logger from '@/logger';
 import { remark } from 'remark';
 import html from 'remark-html';
-
+import db from '../../../../prisma/db';
+import { redirect } from 'next/navigation';
 
 async function getPostBySlug(slug) {
+    /*
     const url = `http://localhost:3042/posts?slug=${slug}`
     const response = await fetch(url)
     if(!response.ok) {
@@ -16,15 +18,33 @@ async function getPostBySlug(slug) {
         return {}
     }
     const post = data[0]
+    */
+    try {
+        const post = await db.post.findFirst({
+            where: {
+                slug
+            },
+            include: {
+                author: true
+            }
+        })
 
-    const processedContent = await remark()
-        .use(html)
-        .process(post.markdown)
-    const contentHtml = processedContent.toString();
+        if(!post) {
+            throw new Error(`Post with slug ${slug} not found`);
+        }
 
-    post.markdown = contentHtml
+        const processedContent = await remark()
+            .use(html)
+            .process(post.markdown)
+        const contentHtml = processedContent.toString();
 
-    return post
+        post.markdown = contentHtml
+
+        return post
+    } catch (error) {
+        logger.error('Erro ao buscar post por slug: ', { slug, error });
+    }
+    redirect('/not-found')
 }
 
 const PagePost = async ({ params }) => {

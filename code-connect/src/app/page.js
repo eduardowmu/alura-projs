@@ -3,6 +3,7 @@ import styles from "./page.module.css";
 import { CardPost } from "@/components/CardPost";
 import logger from '@/logger';
 import Link from "next/link";
+import db from '../../prisma/db';
 /*
 const post = {
   "id": 1,
@@ -19,7 +20,7 @@ const post = {
   }
 }
 */
-async function getAllPosts(page) {
+async function getAllPosts(page, searchTerm) {
   /*
   const response = await fetch(`http://localhost:3042/posts?_page=${page}&_per_page=6`).catch(error => {
     logger.error('Erro de rede: ' + error.message);
@@ -31,6 +32,41 @@ async function getAllPosts(page) {
   }
   return response.json();
   */
+  try {
+    const where = {}
+
+    if(searchTerm) {
+      where.title = {
+        contains: searchTerm,
+        //ignora se letras são maiúsculas ou minúsculas
+        mode: 'insensitive'
+      }
+    }
+
+    const perPage = 6;
+    const skip = (page - 1) * perPage;
+    const totalItens = await db.post.count({ where });
+    const totalPages = Math.ceil(totalItens / perPage);
+    const prev = page > 1 ? page - 1 : null;
+    const next = page < totalPages ? page + 1 : null;
+
+    const posts = await db.post.findMany({
+      take: perPage,
+      skip,
+      where,
+      orderBy: {
+        createdAt: 'desc'
+      },
+      include: {
+        author: true
+      }
+    });
+    return { data: posts, prev, next };
+  } catch (error) {
+    logger.error('Erro ao buscar posts: ', { error});
+    return { data: [], prev: null, next: null };
+  }
+  /*
   const response = await fetch(`http://localhost:3042/posts?_page=${page}&_per_page=6`)
   if(!response.ok) {
     logger.error('Oops algo deu errado')
@@ -38,18 +74,20 @@ async function getAllPosts(page) {
   } 
   logger.info('Posts carregados com sucesso')
   return response.json()
-  
+  */
 }
 
 export default async function Home({ searchParams }) {
-  //const currentPage = searchParams?.page || 1
-  const { data: posts, prev, next } = await getAllPosts(searchParams?.page || 1)
+  const resolvedSearchParams = await searchParams;
+  const currentPage = parseInt(resolvedSearchParams?.page || 1)
+  const searchTerm = resolvedSearchParams?.q
+  const { data: posts, prev, next } = await getAllPosts(currentPage, searchTerm)
   return (
     <main className={styles.grid}>
       {posts.map(post => <CardPost key={post.id} post={post} />)}
       <div className={styles.links}>
-        {prev && <Link href={`/?page=${prev}`}>Página anterior</Link>}
-        {next && <Link href={`/?page=${next}`}>Próxima página</Link>}
+        {prev && <Link href={{ pathname: '/', query: { page: prev, q: searchTerm } }}>Página anterior</Link>}
+        {next && <Link href={{ pathname: '/', query: { page: next, q: searchTerm } }}>Próxima página</Link>}
       </div>
     </main>
   )
