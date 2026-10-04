@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  //output: "export",
+  //assetsPrefix: "/out",
+  //trailingSlash: true,
   images: {
     remotePatterns: [
       {

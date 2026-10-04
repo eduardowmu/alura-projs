@@ -1,7 +1,7 @@
 import styles from "./page.module.css";
 import { Categorias } from "./components/Categorias";
 import { Produtos } from "./components/Produtos";
-import { getCategorias, getTodosProdutos } from "../lib/api";
+//import { getCategorias, getTodosProdutos } from "../lib/api";
 
 async function fetchProdutosApi() {
   const res = await fetch("http://localhost:3000/api/produtos");
